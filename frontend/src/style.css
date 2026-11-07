@@ -141,6 +141,47 @@ button {
   transform: scaleX(-1);
 }
 
+.camera-container canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+.face-detection-indicator {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 6px;
+  background: rgb(17 24 39 / 78%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.face-detection-indicator span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+
+.face-detection-indicator.is-found span {
+  background: #22e887;
+  box-shadow: 0 0 10px rgb(34 232 135 / 80%);
+}
+
 .camera-idle {
   position: absolute;
   inset: 0;
@@ -173,6 +214,10 @@ button {
 }
 
 .camera-section button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
   width: 100%;
   min-height: 44px;
   border: none;
@@ -182,6 +227,7 @@ button {
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
+  transition: background-color 160ms ease, transform 160ms ease, opacity 160ms ease;
 }
 
 .camera-section button:hover {
@@ -191,6 +237,30 @@ button {
 .camera-section button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.camera-section button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.camera-section button.is-loading {
+  cursor: progress;
+}
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: button-spin 700ms linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .camera-result {
@@ -258,5 +328,16 @@ button {
   .camera-workspace {
     grid-template-columns: minmax(0, 1fr);
     gap: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-spinner {
+    animation: none;
+    border-top-color: transparent;
+  }
+
+  .camera-section button {
+    transition: none;
   }
 }
